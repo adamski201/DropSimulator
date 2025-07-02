@@ -1,6 +1,6 @@
 ﻿namespace DropSimulator.Services
 {
-    internal class RandomProvider : IRandomProvider
+    public class RandomProvider : IRandomProvider
     {
         private readonly Random _rng = new();
 

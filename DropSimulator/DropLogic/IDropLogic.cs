@@ -6,6 +6,6 @@ namespace DropSimulator.Simulators
     internal interface IDropLogic
     {
         IReadOnlyCollection<int> UniqueItemIds { get; }
-        List<Drop> RollDrops(int killCount, SimulationContext context);
+        void RollDrops(int killCount, SimulationContext context);
     }
 }

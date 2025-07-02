@@ -3,7 +3,7 @@ using DropSimulator.Services;
 
 namespace DropSimulator.Simulators
 {
-    internal class KingBlackDragonDropLogic : IDropLogic
+    public class KingBlackDragonDropLogic : IDropLogic
     {
         private readonly List<DropTableItem> DropTable =
         [
@@ -22,21 +22,16 @@ namespace DropSimulator.Simulators
 
         public IReadOnlyCollection<int> UniqueItemIds => DropTable.Select(item => item.ItemId).ToList();
 
-        public List<Drop> RollDrops(int killCount, SimulationContext context)
+        public void RollDrops(int killCount, SimulationContext context)
         {
-            var drops = new List<Drop>();
-
             foreach (var item in DropTable)
             { 
                 if (_rng.NextDouble() <= item.DropRate)
                 {
                     var drop = new Drop(item.ItemId, killCount);
-                    drops.Add(drop);
                     context.AddDrop(drop);
                 }
             }
-
-            return drops;
         }
     }
 }

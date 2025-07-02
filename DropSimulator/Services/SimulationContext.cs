@@ -2,7 +2,7 @@
 
 namespace DropSimulator.Services
 {
-    internal class SimulationContext
+    public class SimulationContext
     {
         public List<Drop> Drops { get; set; } = [];
         public int? GreenlogKillCount { get; private set; }

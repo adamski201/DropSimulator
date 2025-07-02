@@ -20,9 +20,7 @@ namespace DropSimulator.Services
 
             for (int kc = 1; kc <= numKills; kc++)
             {
-                var drops = _dropLogic.RollDrops(kc, context);
-
-                context.AddDrops(drops);
+                _dropLogic.RollDrops(kc, context);
             }
 
             var result = new SimulationResult(numKills, context.GreenlogKillCount, context.Drops, context.DropQuantities, context.UniqueFirstObtainedAt);

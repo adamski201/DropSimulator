@@ -1,6 +1,6 @@
 ﻿namespace DropSimulator.Services
 {
-    internal interface IRandomProvider
+    public interface IRandomProvider
     {
         double NextDouble();
     }
