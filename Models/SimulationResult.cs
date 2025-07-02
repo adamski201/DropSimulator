@@ -1,32 +1,29 @@
-﻿
-namespace DropSimulator.Models
+﻿namespace DropSimulator.Models
 {
     internal class SimulationResult
     {
-        public int KillCount { get; set; }
-        public int? GreenlogKillCount { get; set; }
-        public List<DropRecord> Drops { get; } = new();
-        public Dictionary<int, int> DropQuantities { get; } = new();
-        public Dictionary<int, int> DropFirstObtainedAt { get; } = new();
+        public int KillCount { get; }
+        public int? GreenlogKillCount { get; }
+        public bool IsGreenlogged { get; }
+        public List<Drop> Drops { get; }
+        public IReadOnlyDictionary<int, int> DropQuantities { get; }
+        public IReadOnlyDictionary<int, int> DropFirstObtainedAt { get; }
 
-        internal void AddDrop(DropRecord drop)
+        public SimulationResult(
+            int killCount,
+            int? greenlogKillCount,
+            IEnumerable<Drop> drops,
+            IReadOnlyDictionary<int, int> dropQuantities,
+            IReadOnlyDictionary<int, int> uniqueFirstObtainedAt
+        )
         {
-            Drops.Add(drop);
-            var currentKc = drop.KillCount;
+            KillCount = killCount;
+            GreenlogKillCount = greenlogKillCount;
+            Drops = drops.ToList();
+            DropQuantities = new Dictionary<int, int>(dropQuantities);
+            DropFirstObtainedAt = new Dictionary<int, int>(uniqueFirstObtainedAt);
 
-            if (DropQuantities.ContainsKey(drop.Id))
-            {
-                DropQuantities[drop.Id] += 1;
-            }
-            else
-            {
-                DropQuantities[drop.Id] = 1;
-            }
-
-            if (!DropFirstObtainedAt.ContainsKey(drop.Id))
-            {
-                DropFirstObtainedAt[drop.Id] = currentKc;
-            }
+            IsGreenlogged = GreenlogKillCount > 0;
         }
     }
 }

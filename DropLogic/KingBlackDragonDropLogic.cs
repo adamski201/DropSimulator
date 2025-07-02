@@ -13,19 +13,26 @@ namespace DropSimulator.Simulators
             new DropTableItem(11286, 1.0 / 5000)
         ];
 
-        private readonly Random _rng = new();
+        private readonly IRandomProvider _rng;
 
-        public IReadOnlyCollection<int> UniqueItemIds => (IReadOnlyCollection<int>)DropTable.Select(item => item.ItemId);
-
-        public List<DropRecord> RollDrops(int killCount, SimulationContext context)
+        public KingBlackDragonDropLogic(IRandomProvider rng)
         {
-            var drops = new List<DropRecord>();
+            _rng = rng;
+        }
+
+        public IReadOnlyCollection<int> UniqueItemIds => DropTable.Select(item => item.ItemId).ToList();
+
+        public List<Drop> RollDrops(int killCount, SimulationContext context)
+        {
+            var drops = new List<Drop>();
 
             foreach (var item in DropTable)
-            {
+            { 
                 if (_rng.NextDouble() <= item.DropRate)
                 {
-                    drops.Add(new DropRecord(item.ItemId, killCount));
+                    var drop = new Drop(item.ItemId, killCount);
+                    drops.Add(drop);
+                    context.AddDrop(drop);
                 }
             }
 

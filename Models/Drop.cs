@@ -1,13 +1,13 @@
 ﻿namespace DropSimulator.Models
 {
-    public class DropRecord
+    public class Drop
     {
-        public int Id { get; set; }
+        public int ItemId { get; set; }
         public int KillCount { get; set; }
 
-        public DropRecord(int Id, int Killcount)
+        public Drop(int Id, int Killcount)
         {
-            this.Id = Id;
+            this.ItemId = Id;
             this.KillCount = Killcount;
         }
     }

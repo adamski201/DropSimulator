@@ -11,25 +11,21 @@ namespace DropSimulator.Services
         public BossSimulator(IDropLogic dropLogic)
         {
             _dropLogic = dropLogic;
-            this._uniqueItems = _dropLogic.UniqueItemIds;
+            _uniqueItems = _dropLogic.UniqueItemIds;
         }
 
         public SimulationResult RunSimulation(int numKills)
         {
-            var result = new SimulationResult();
-            var context = new SimulationContext();
+            var context = new SimulationContext(_uniqueItems);
 
             for (int kc = 1; kc <= numKills; kc++)
             {
                 var drops = _dropLogic.RollDrops(kc, context);
 
-                foreach (var drop in drops)
-                {
-                    context.Drops.Add(drop);
-                }
+                context.AddDrops(drops);
             }
 
-
+            var result = new SimulationResult(numKills, context.GreenlogKillCount, context.Drops, context.DropQuantities, context.UniqueFirstObtainedAt);
 
             return result;
         }
