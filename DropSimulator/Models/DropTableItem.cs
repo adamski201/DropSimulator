@@ -1,6 +1,6 @@
 ﻿namespace DropSimulator.Models
 {
-    internal class DropTableItem
+    public class DropTableItem
     {
         public int ItemId { get; set; }
         public double DropRate { get; }

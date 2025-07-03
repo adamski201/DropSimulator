@@ -6,12 +6,14 @@ namespace DropSimulator.Services
     internal class BossSimulator
     {
         private readonly IDropLogic _dropLogic;
+        private readonly List<DropTableItem> _dropTable;
         private readonly IReadOnlyCollection<int> _uniqueItems;
 
-        public BossSimulator(IDropLogic dropLogic)
+        public BossSimulator(IDropLogic dropLogic, IEnumerable<DropTableItem> dropTable)
         {
             _dropLogic = dropLogic;
-            _uniqueItems = _dropLogic.UniqueItemIds;
+            _dropTable = dropTable.ToList();
+            _uniqueItems = _dropTable.Select(item => item.ItemId).ToList();
         }
 
         public SimulationResult RunSimulation(int numKills)
@@ -20,12 +22,17 @@ namespace DropSimulator.Services
 
             for (int kc = 1; kc <= numKills; kc++)
             {
-                _dropLogic.RollDrops(kc, context);
+                var drops = _dropLogic.RollDrops(kc, context);
+                context.AddDrops(drops);
             }
 
-            var result = new SimulationResult(numKills, context.GreenlogKillCount, context.Drops, context.DropQuantities, context.UniqueFirstObtainedAt);
-
-            return result;
+            return new SimulationResult(
+                numKills,
+                context.GreenlogKillCount,
+                context.Drops,
+                context.DropQuantities,
+                context.UniqueFirstObtainedAt
+            );
         }
     }
 }
